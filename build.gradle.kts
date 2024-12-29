@@ -85,7 +85,7 @@ publishing {
     publications {
         register<MavenPublication>("gpr") {
             groupId = "$group"
-            version = "$version"
+            version = version
             artifact(tasks.named<ShadowJar>("shadowJar").get())
             artifact(tasks.named<Jar>("sourcesJar").get())
         }

@@ -1,4 +1,4 @@
-type: Mongo # Avaiable types: mongo, mysql, sqlite
+type: Sqlite # Avaiable types: mongo, mysql, sqlite
 
 
 # MONGO
@@ -9,9 +9,9 @@ Mongo:
 
 # mysql
 SQL:
-  connection-string: "jdbc:mysql://localhost:3306/database"
-  username: "username"
-  password: "password"
+  connection-string: "jdbc:sqlite:path/to/db/sample.db"
+  username: "username" # Not required for sqlite
+  password: "password" # Not required for sqlite
 
 # sqlite
 
