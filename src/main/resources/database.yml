@@ -2,12 +2,16 @@ type: Mongo # Avaiable types: mongo, mysql, sqlite
 
 
 # MONGO
-connection-string: "mongodb://<username>:<password>@<host>:<port>/"
-database: "db"
+Mongo:
+  connection-string: "mongodb://<username>:<password>@<host>:<port>/"
+  database: "db"
 
 
 # mysql
-
+MySQL:
+  connection-string: "jdbc:mysql://localhost:3306/database"
+  username: "username"
+  password: "password"
 
 # sqlite
 
