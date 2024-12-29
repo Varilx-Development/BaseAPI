@@ -75,9 +75,9 @@ publishing {
     repositories {
         maven {
             name = "Reposilite"
-            url = URI((System.getenv("REPOSILITE_URL") ?: "default").toString())
+            url = URI("https://reposilite.varilx.de/Varilx")
             credentials {
-                username = System.getenv("REPOSILITE_USER")
+                username = "Dario"
                 password = System.getenv("REPOSILITE_TOKEN")
             }
         }

@@ -21,7 +21,6 @@ public class SQLiteTest {
                 type: SQLITE
                 SQL:
                     connection-string: "jdbc:sqlite:sample.db"
-                
                 """));
 
         SQLService service = (SQLService) Service.load(configuration, this.getClass().getClassLoader());

@@ -44,14 +44,10 @@ jobs:
         run: ./gradlew publish --no-daemon --stacktrace
         env:
           REPOSILITE_TOKEN: ${{secrets.REPOSILITE_TOKEN}}
-          REPOSILITE_URL: ${{secrets.REPOSILITE_URL}}
-          REPOSILITE_USER: ${{secrets.REPOSILITE_USER}}
       - name: Rebuild on Failure
         if: ${{ failure() }}
         run: |
-          ./gradlew clean cleanCache
-          ./gradlew publish --no-daemon --stacktrace
+          ./gradlew clean
+          ./gradlew publish --no-daemon --stacktrace --refresh-dependencies
         env:
           REPOSILITE_TOKEN: ${{secrets.REPOSILITE_TOKEN}}
-          REPOSILITE_URL: ${{secrets.REPOSILITE_URL}}
-          REPOSILITE_USER: ${{secrets.REPOSILITE_USER}}
