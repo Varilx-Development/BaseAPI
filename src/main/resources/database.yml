@@ -1,0 +1,13 @@
+type: Mongo # Avaiable types: mongo, mysql, sqlite
+
+
+# MONGO
+connection-string: "mongodb://<username>:<password>@<host>:<port>/"
+database: "db"
+
+
+# mysql
+
+
+# sqlite
+
