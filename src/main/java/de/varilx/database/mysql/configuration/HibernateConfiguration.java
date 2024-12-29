@@ -10,4 +10,10 @@ public class HibernateConfiguration {
 
     String connectionUri, userName, password;
 
+    public Configuration toHibernateConfig() {
+        Configuration configuration = new Configuration();
+
+        
+    }
+
 }
