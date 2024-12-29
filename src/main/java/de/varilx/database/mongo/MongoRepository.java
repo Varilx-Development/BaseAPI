@@ -3,7 +3,6 @@ package de.varilx.database.mongo;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
-import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import de.varilx.database.Repository;
 import de.varilx.utils.ReflectionUtils;
@@ -14,13 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class MongoRepo<E, ID> implements Repository<E, ID> {
+public class MongoRepository<E, ID> implements Repository<E, ID> {
 
     private final MongoCollection<E> database;
     private final Class<E> entityClass;
     private final Class<ID> idClass;
 
-    public MongoRepo(MongoCollection<E> database, Class<E> entityClass, Class<ID> idClass) {
+    public MongoRepository(MongoCollection<E> database, Class<E> entityClass, Class<ID> idClass) {
         this.database = database;
         this.entityClass = entityClass;
         this.idClass = idClass;
@@ -42,28 +41,33 @@ public class MongoRepo<E, ID> implements Repository<E, ID> {
     }
 
     @Override
-    public void deleteById(ID id) {
-        CompletableFuture.runAsync(() -> {
+    public CompletableFuture<Void> deleteById(ID id) {
+       return CompletableFuture.supplyAsync(() -> {
             this.database.deleteOne(createIdFilter(id));
+            return null;
         });
     }
 
     @Override
-    public void save(E e) {
-        CompletableFuture.runAsync(() -> {
+    public CompletableFuture<Void> save(E e) {
+      return   CompletableFuture.supplyAsync(() -> {
             Bson idFilter = createIdFilter(getId(e));
             if (database.countDocuments(idFilter) > 0) {
                 UpdateResult result = database.replaceOne(idFilter, e, new ReplaceOptions().upsert(true));
-                return;
+                return null;
             }
             database.insertOne(e);
+          return null;
+
         });
     }
 
     @Override
-    public void insert(E e) {
-        CompletableFuture.runAsync(() -> {
+    public CompletableFuture<Void> insert(E e) {
+       return CompletableFuture.supplyAsync(() -> {
             database.insertOne(e);
+           return null;
+
         });
     }
 
@@ -76,8 +80,11 @@ public class MongoRepo<E, ID> implements Repository<E, ID> {
     }
 
     @Override
-    public void deleteAll() {
-        database.deleteMany(Filters.exists("_id"));
+    public CompletableFuture<Void> deleteAll() {
+        return CompletableFuture.supplyAsync(() -> {
+            database.deleteMany(Filters.exists("_id"));
+            return null;
+        });
     }
 
     private ID getId(E entity) {

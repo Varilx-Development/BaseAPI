@@ -9,14 +9,14 @@ public interface Repository<ENTITY, ID> {
 
     CompletableFuture<ENTITY> findFirstById(ID id);
 
-    void deleteById(ID id);
+    CompletableFuture<Void> deleteById(ID id);
 
-    void save(ENTITY entity);
+    CompletableFuture<Void> save(ENTITY entity);
 
-    void insert(ENTITY entity);
+    CompletableFuture<Void> insert(ENTITY entity);
 
     CompletableFuture<Boolean> exists(ID id);
 
-    void deleteAll();
+    CompletableFuture<Void> deleteAll();
 
 }

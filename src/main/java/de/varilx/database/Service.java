@@ -1,6 +1,8 @@
 package de.varilx.database;
 
+import com.google.common.reflect.ClassPath;
 import de.varilx.database.mongo.MongoService;
+import de.varilx.database.sql.SQLService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,17 +14,17 @@ import java.util.List;
 
 public abstract class Service {
 
-    public Service(YamlConfiguration configuration) {
+    public Service(YamlConfiguration configuration, ClassLoader loader) {
 
     }
 
     public abstract <ENTITY, ID> Repository<ENTITY, ID> create(String name, Class<ENTITY> entityClazz, Class<ID> idClass);
 
-    public static Service load(YamlConfiguration configuration) {
+    public static Service load(YamlConfiguration configuration, ClassLoader loader) {
         @Nullable ServiceType type = ServiceType.findBy(configuration.getString("type"));
         if (type == null) throw new RuntimeException("No Database Type found");
         try {
-            return (Service) type.getClazz().getDeclaredConstructors()[0].newInstance(configuration);
+            return (Service) type.getClazz().getDeclaredConstructors()[0].newInstance(configuration, loader);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
@@ -35,8 +37,7 @@ public abstract class Service {
     public enum ServiceType {
 
         MONGO(MongoService.class),
-        MYSQL(Service.class),
-        SQLITE(Service.class);
+        SQL(SQLService.class);
 
         private final Class<? extends Service> clazz;
 
