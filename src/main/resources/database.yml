@@ -8,7 +8,7 @@ Mongo:
 
 
 # mysql
-MySQL:
+SQL:
   connection-string: "jdbc:mysql://localhost:3306/database"
   username: "username"
   password: "password"

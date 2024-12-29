@@ -18,8 +18,8 @@ public class MongoService extends Service {
     MongoClient client;
     MongoDatabase database;
 
-    public MongoService(YamlConfiguration configuration, ClassLoader loader) {
-        super(configuration, loader);
+    public MongoService(YamlConfiguration configuration, ClassLoader loader, ServiceType type) {
+        super(configuration, loader, type);
         this.client = MongoClients.create(Objects.requireNonNull(configuration.getString("connection-string"), "No Connection String given"));
         this.database = client.getDatabase(Objects.requireNonNull(configuration.getString("database"), "No database given"));
     }

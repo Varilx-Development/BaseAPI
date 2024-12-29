@@ -17,28 +17,39 @@ repositories {
 }
 
 dependencies {
+    // MongoDB
     implementation("org.mongodb:mongodb-driver-sync:5.2.1")
-    implementation("mysql:mysql-connector-java:8.0.33")
-    implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
-    implementation("org.hibernate:hibernate-core:6.3.1.Final")
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
-
-    implementation("org.reflections:reflections:0.10.2")
-
-    implementation("org.projectlombok:lombok:1.18.36")
-    annotationProcessor("org.projectlombok:lombok:1.18.36")
-    implementation("org.jetbrains:annotations:26.0.1")
-    implementation("org.jetbrains:annotations:26.0.1")
-
     testImplementation("org.mongodb:mongodb-driver-sync:5.2.1")
 
-    compileOnly("org.projectlombok:lombok:1.18.36")
+    // Hibernate and Jakarta
+    implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
+    implementation("org.hibernate:hibernate-core:6.3.1.Final")
+    implementation("org.hibernate.orm:hibernate-community-dialects:6.3.0.Final")
+    testImplementation("org.hibernate.orm:hibernate-community-dialects:6.3.0.Final")
+
+    // SQLite
+    implementation("org.xerial:sqlite-jdbc:3.47.1.0")
+    testImplementation("org.xerial:sqlite-jdbc:3.47.1.0")
+
+    // PaperMC API
+    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    testImplementation("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+
+    // Reflections
+    implementation("org.reflections:reflections:0.10.2")
+
+    // Lombok
+    implementation("org.projectlombok:lombok:1.18.36")
     annotationProcessor("org.projectlombok:lombok:1.18.36")
+    compileOnly("org.projectlombok:lombok:1.18.36")
     testImplementation("org.projectlombok:lombok:1.18.36")
     testAnnotationProcessor("org.projectlombok:lombok:1.18.36")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.4")
+    // JetBrains Annotations
+    implementation("org.jetbrains:annotations:26.0.1")
 
+    // JUnit and SLF4J for testing
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.4")
     testImplementation("org.slf4j:slf4j-jdk14:2.0.16")
 }
 

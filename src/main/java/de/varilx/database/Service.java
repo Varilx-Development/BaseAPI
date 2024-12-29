@@ -14,7 +14,7 @@ import java.util.List;
 
 public abstract class Service {
 
-    public Service(YamlConfiguration configuration, ClassLoader loader) {
+    public Service(YamlConfiguration configuration, ClassLoader loader, ServiceType type) {
 
     }
 
@@ -24,7 +24,7 @@ public abstract class Service {
         @Nullable ServiceType type = ServiceType.findBy(configuration.getString("type"));
         if (type == null) throw new RuntimeException("No Database Type found");
         try {
-            return (Service) type.getClazz().getDeclaredConstructors()[0].newInstance(configuration, loader);
+            return (Service) type.getClazz().getDeclaredConstructors()[0].newInstance(configuration, loader, type);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
@@ -37,7 +37,9 @@ public abstract class Service {
     public enum ServiceType {
 
         MONGO(MongoService.class),
-        SQL(SQLService.class);
+        MYSQL(SQLService.class),
+        SQLITE(SQLService.class);
+
 
         private final Class<? extends Service> clazz;
 

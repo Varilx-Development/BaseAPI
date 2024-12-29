@@ -19,28 +19,16 @@ public class SQLService extends Service {
 
     SessionFactory sessionFactory;
 
-    public SQLService(String connectionString, String username, String password, ClassLoader loader) {
-        super(null, loader);
+    public SQLService(YamlConfiguration configuration, ClassLoader loader, ServiceType type) {
+        super(configuration, loader, type);
         HibernateConfiguration hibernateConfiguration = new HibernateConfiguration(
-                connectionString,
-                username,
-                password
+                configuration.getString("SQL.connection-string"),
+                configuration.getString("SQL.username"),
+                configuration.getString("SQL.password")
         );
 
 
-        sessionFactory = hibernateConfiguration.toHibernateConfig(loader).buildSessionFactory();
-    }
-
-    public SQLService(YamlConfiguration configuration, ClassLoader loader) {
-        super(configuration, loader);
-        HibernateConfiguration hibernateConfiguration = new HibernateConfiguration(
-                Objects.requireNonNull(configuration.getString("MySQL.connection-string")),
-                Objects.requireNonNull(configuration.getString("MySQL.username")),
-                Objects.requireNonNull(configuration.getString("MySQL.password"))
-        );
-
-
-        sessionFactory = hibernateConfiguration.toHibernateConfig(loader).buildSessionFactory();
+        sessionFactory = hibernateConfiguration.toHibernateConfig(loader, type).buildSessionFactory();
     }
 
     @Override

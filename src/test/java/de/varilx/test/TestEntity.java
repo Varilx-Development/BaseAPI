@@ -16,11 +16,18 @@ import java.util.UUID;
 public class TestEntity {
 
     @jakarta.persistence.Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private int age;
 
+    public TestEntity(int age) {
+        this.age = age;
+    }
 
-
-
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof TestEntity entity)) return false;
+        return entity.getId() == this.id && entity.getAge() == this.age;
+    }
 }

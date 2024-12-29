@@ -96,27 +96,27 @@ public class SQLRepository<E, ID> implements Repository<E, ID> {
     @Override
     public CompletableFuture<Boolean> exists(ID id) {
         return CompletableFuture.supplyAsync(() -> {
-            Session session = this.sessionFactory.openSession();
-            session.beginTransaction();
-            String query = "SELECT COUNT(1) FROM " + name + " o WHERE o.id = :id";
-            E result = session.createQuery(query, entityClass).setParameter("id", id.toString())
-                    .uniqueResult();
-            session.getTransaction().commit();
-            session.close();
-            return result != null;
+            try (Session session = this.sessionFactory.openSession()) {
+                session.beginTransaction();
+                String query = "SELECT COUNT(1) FROM " + name + " o WHERE o.id = :id";
+                E result = session.createQuery(query, entityClass).setParameter("id", id)
+                        .uniqueResult();
+                session.getTransaction().commit();
+                return result != null;
+            }
         });
     }
 
     @Override
     public CompletableFuture<Void> deleteAll() {
         return CompletableFuture.supplyAsync(() -> {
-            Session session = this.sessionFactory.openSession();
-            session.beginTransaction();
-            String query = "DELETE FROM " + name;
-            session.createQuery(query, entityClass).executeUpdate();
-            session.getTransaction().commit();
-            session.close();
-            return null;
+            try(Session session = this.sessionFactory.openSession()) {
+                session.beginTransaction();
+                String query = "DELETE FROM " + name;
+                session.createMutationQuery(query).executeUpdate();
+                session.getTransaction().commit();
+                return null;
+            }
         });
     }
 }
