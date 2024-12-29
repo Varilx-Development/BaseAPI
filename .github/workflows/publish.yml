@@ -40,14 +40,6 @@ jobs:
           echo "Setting version to $FULL_VERSION"
           sed -i "s/^project_version = .*/project_version = $FULL_VERSION/" gradle.properties
           echo "FULL_VERSION=$FULL_VERSION" >> $GITHUB_ENV
-      - name: Commit version change
-        run: |
-          git config --global user.name "Gitea Actions"
-          git config --global user.email "actions@gitea.com"
-          git checkout -b ${{github.event.release.target_commitish}}
-          git add .
-          git commit -m "[ci-skip] Update version to ${{ env.FULL_VERSION }}"
-          git push --force origin ${{github.event.release.target_commitish}}
       - name: Build
         run: ./gradlew publish --no-daemon --stacktrace
         env:
