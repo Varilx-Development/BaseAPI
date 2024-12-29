@@ -5,14 +5,17 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import de.varilx.database.Repository;
 import de.varilx.database.Service;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.Objects;
 
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class MongoService extends Service {
 
-    private final MongoClient client;
-    private final MongoDatabase database;
+    MongoClient client;
+    MongoDatabase database;
 
     public MongoService(YamlConfiguration configuration) {
         super(configuration);

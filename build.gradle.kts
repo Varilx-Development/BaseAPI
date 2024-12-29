@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "de.varilx"
-version = "1.0-SNAPSHOT"
+version = project.property("project_version") as String
 
 repositories {
     mavenCentral()

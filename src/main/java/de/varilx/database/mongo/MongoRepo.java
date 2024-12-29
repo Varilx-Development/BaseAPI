@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class MongoRepo<E, ID> implements Repository<E, ID> {
 
@@ -27,33 +28,51 @@ public class MongoRepo<E, ID> implements Repository<E, ID> {
 
 
     @Override
-    public List<E> findAll() {
-        return this.database.find().into(new ArrayList<>());
+    public CompletableFuture<List<E>> findAll() {
+        return CompletableFuture.supplyAsync(() -> {
+            return this.database.find().into(new ArrayList<>());
+        });
     }
 
     @Override
-    public E findFirstById(ID id) {
-        return this.database.find(createIdFilter(id)).first();
+    public CompletableFuture<E> findFirstById(ID id) {
+        return CompletableFuture.supplyAsync(() -> {
+            return this.database.find(createIdFilter(id)).first();
+        });
     }
 
     @Override
     public void deleteById(ID id) {
-        this.database.deleteOne(createIdFilter(id));
+        CompletableFuture.runAsync(() -> {
+            this.database.deleteOne(createIdFilter(id));
+        });
     }
 
     @Override
     public void save(E e) {
-        Bson idFilter = createIdFilter(getId(e));
-        if (database.countDocuments(idFilter) > 0) {
-            UpdateResult result = database.replaceOne(idFilter, e, new ReplaceOptions().upsert(true));
-        }
-        database.insertOne(e);
+        CompletableFuture.runAsync(() -> {
+            Bson idFilter = createIdFilter(getId(e));
+            if (database.countDocuments(idFilter) > 0) {
+                UpdateResult result = database.replaceOne(idFilter, e, new ReplaceOptions().upsert(true));
+                return;
+            }
+            database.insertOne(e);
+        });
     }
 
     @Override
-    public boolean exists(ID id) {
-        Bson idFilter = createIdFilter(id);
-        return database.countDocuments(idFilter) > 0;
+    public void insert(E e) {
+        CompletableFuture.runAsync(() -> {
+            database.insertOne(e);
+        });
+    }
+
+    @Override
+    public CompletableFuture<Boolean> exists(ID id) {
+        return CompletableFuture.supplyAsync(() -> {
+            Bson idFilter = createIdFilter(id);
+            return database.countDocuments(idFilter) > 0;
+        });
     }
 
     @Override
