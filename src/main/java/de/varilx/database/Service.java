@@ -1,17 +1,15 @@
 package de.varilx.database;
 
-import com.google.common.reflect.ClassPath;
 import de.varilx.database.mongo.MongoService;
+import de.varilx.database.repository.Repository;
 import de.varilx.database.sql.SQLService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class Service {
