@@ -1,14 +1,12 @@
 package de.varilx.database.sql.repository;
 
 
-import de.varilx.database.Repository;
-import jakarta.persistence.EntityManager;
+import de.varilx.database.repository.Repository;
 import jakarta.persistence.EntityTransaction;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
