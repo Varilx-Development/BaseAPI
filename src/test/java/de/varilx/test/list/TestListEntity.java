@@ -14,7 +14,7 @@ import java.util.UUID;
 @Setter
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TestEntity {
+public class TestListEntity {
 
     @Id
     UUID id;
@@ -24,13 +24,13 @@ public class TestEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     List<SchoolClass> classes;
 
-    public TestEntity(int age) {
+    public TestListEntity(int age) {
         this.age = age;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof TestEntity entity)) return false;
+        if (!(obj instanceof TestListEntity entity)) return false;
         return entity.getId() == this.id && entity.getAge() == this.age;
     }
 }

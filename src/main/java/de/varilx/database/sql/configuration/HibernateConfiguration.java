@@ -8,11 +8,11 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.cfg.Configuration;
 import org.jetbrains.annotations.Nullable;
 import org.reflections.Reflections;
+import org.slf4j.Logger;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -47,7 +47,7 @@ public class HibernateConfiguration {
 
         // Discble Reflections logger
         try {
-            Reflections.log.getClass();
+            Logger log = Reflections.log;
             Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
             unsafeField.setAccessible(true);
             Unsafe unsafe = (Unsafe) unsafeField.get(null);

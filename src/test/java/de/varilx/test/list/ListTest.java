@@ -3,17 +3,23 @@ package de.varilx.test.list;
 import de.varilx.database.Service;
 import de.varilx.database.repository.Repository;
 import de.varilx.database.sql.SQLService;
-import jakarta.transaction.Transactional;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 public class ListTest {
+
+    @BeforeEach
+    public void delete() {
+        new File("sample.db").delete();
+    }
 
     @Test
     public void test() throws ExecutionException, InterruptedException {
@@ -24,9 +30,9 @@ public class ListTest {
                 """));
 
         SQLService service = (SQLService) Service.load(configuration, this.getClass().getClassLoader());
-        Repository<TestEntity, UUID> repo = service.create(TestEntity.class, UUID.class);
+        Repository<TestListEntity, UUID> repo = service.create(TestListEntity.class, UUID.class);
         repo.deleteAll().get();
-        TestEntity entity = new TestEntity(UUID.randomUUID(), 15, new ArrayList<>());
+        TestListEntity entity = new TestListEntity(UUID.randomUUID(), 15, new ArrayList<>());
         entity.getClasses().add(new SchoolClass(entity));
 
         repo.insert(entity).get();

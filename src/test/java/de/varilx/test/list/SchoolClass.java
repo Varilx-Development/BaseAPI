@@ -20,9 +20,9 @@ public class SchoolClass {
 
 
     @ManyToOne
-    TestEntity user;
+    TestListEntity user;
 
-    public SchoolClass(TestEntity user) {
+    public SchoolClass(TestListEntity user) {
         this.user = user;
     }
 }
