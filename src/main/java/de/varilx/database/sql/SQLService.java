@@ -1,7 +1,6 @@
 package de.varilx.database.sql;
 
-import com.google.common.reflect.ClassPath;
-import de.varilx.database.Repository;
+import de.varilx.database.repository.Repository;
 import de.varilx.database.Service;
 import de.varilx.database.sql.configuration.HibernateConfiguration;
 import de.varilx.database.sql.repository.SQLRepository;
@@ -10,8 +9,6 @@ import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.hibernate.SessionFactory;
-
-import java.util.Objects;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
