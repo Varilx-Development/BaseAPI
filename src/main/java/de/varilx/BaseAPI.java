@@ -32,7 +32,6 @@ public class BaseAPI {
         this.plugin = plugin;
         this.languageConfigurations = new HashMap<>();
         this.gameInventoryController = new GameInventoryController(this);
-        this.vaxCommandRegistry = new VaxCommandRegistry();
         BaseAPI.baseAPI = this;
     }
 
@@ -48,6 +47,7 @@ public class BaseAPI {
             Configuration config = new Configuration(plugin.getDataFolder(), "lang/" + locale.getLanguage() + ".yml");
             this.languageConfigurations.put(locale.getLanguage(), config);
         });
+        this.vaxCommandRegistry = new VaxCommandRegistry();
     }
 
 }
