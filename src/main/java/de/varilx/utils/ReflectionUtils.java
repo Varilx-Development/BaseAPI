@@ -1,6 +1,6 @@
 package de.varilx.utils;
 
-import de.varilx.database.Id;
+import de.varilx.database.id.Id;
 import lombok.experimental.UtilityClass;
 
 import java.lang.reflect.Field;
