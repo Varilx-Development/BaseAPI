@@ -1,4 +1,4 @@
-package de.varilx.database;
+package de.varilx.database.id;
 
 import java.lang.annotation.*;
 
