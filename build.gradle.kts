@@ -71,6 +71,14 @@ tasks.register<Jar>("sourcesJar") {
     from(sourceSets.main.get().allJava)
 }
 
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+}
+
 publishing {
     repositories {
         maven {
@@ -96,4 +104,5 @@ publishing {
 tasks.named("publishGprPublicationToReposiliteRepository") {
     dependsOn(tasks.named("jar"))
 }
+
 
