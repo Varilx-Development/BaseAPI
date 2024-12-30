@@ -34,7 +34,7 @@ public class LanguageUtils {
         Configuration langConfig = BaseAPI.getBaseAPI().getLanguageConfigurations().get(language);
         List<Component> components = new ArrayList<>();
         langConfig.getConfig().getStringList(path).forEach(line ->
-                components.add(MiniMessage.miniMessage().deserialize(line, baseResolvers.toArray(TagResolver[]::new)))
+                components.add(MiniMessage.miniMessage().deserialize("<gray><!i>" + line, baseResolvers.toArray(TagResolver[]::new)))
         );
 
         return components;
@@ -58,13 +58,13 @@ public class LanguageUtils {
             BaseAPI.getBaseAPI().getPlugin().getLogger().warning(path + " was not found in lang/" + lang + ".yml");
             return Component.text("Path: " + path + " not found!");
         }
-        return MiniMessage.miniMessage().deserialize(raw, args);
+        return MiniMessage.miniMessage().deserialize("<!i><gray>" + raw, args);
     }
 
     private Pair<String, List<TagResolver>> initializeLanguageAndResolvers(TagResolver... args) {
         String language = Optional.ofNullable(BaseAPI.getBaseAPI().getConfiguration().getConfig().getString("language")).orElse("en");
         Configuration langConfig = BaseAPI.getBaseAPI().getLanguageConfigurations().get(language);
-        
+
         List<TagResolver> baseResolvers = new ArrayList<>();
         @Nullable String prefix = langConfig.getConfig().getString("prefix");
         if (prefix != null) baseResolvers.add(Placeholder.parsed("prefix", prefix));
