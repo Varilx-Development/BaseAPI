@@ -5,6 +5,7 @@ import de.varilx.database.Service;
 import de.varilx.database.repository.Repository;
 import de.varilx.database.sql.SQLService;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,12 @@ import java.util.concurrent.ExecutionException;
 public class SQLiteTest {
 
     @BeforeEach
-    public void delete() {
+    public void deleteBefore() {
+        new File("sample.db").delete();
+    }
+
+    @AfterEach
+    public void deleteAfter() {
         new File("sample.db").delete();
     }
 
