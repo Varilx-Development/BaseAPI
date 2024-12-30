@@ -32,7 +32,9 @@ public class SQLService extends Service {
     }
 
     @Override
-    public <ENTITY, ID> Repository<ENTITY, ID> create(String name, Class<ENTITY> entityClazz, Class<ID> idClass) {
-        return new SQLRepository<>(sessionFactory, entityClazz, idClass, name);
+    public <ENTITY, ID> Repository<ENTITY, ID> create(Class<ENTITY> entityClazz, Class<ID> idClass) {
+        SQLRepository<ENTITY, ID> repo = new SQLRepository<>(sessionFactory, entityClazz, idClass);
+        this.getRepositoryMap().put(entityClazz, repo);
+        return repo;
     }
 }

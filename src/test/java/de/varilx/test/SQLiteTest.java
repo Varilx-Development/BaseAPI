@@ -24,15 +24,20 @@ public class SQLiteTest {
                 """));
 
         SQLService service = (SQLService) Service.load(configuration, this.getClass().getClassLoader());
-        Repository<TestEntity, UUID> repo = service.create("TestEntity", TestEntity.class, UUID.class);
+        Repository<TestEntity, UUID> repo = service.create(TestEntity.class, UUID.class);
 
         repo.deleteAll().get();
+        Assertions.assertEquals(repo.exists(UUID.randomUUID()).get(), false);
         repo.insert(new TestEntity(20)).get();
         List<TestEntity> result = repo.findAll().get();
         Assertions.assertEquals(result.size(), 1);
         Assertions.assertEquals(repo.exists(result.getFirst().getId()).get(), true);
         Assertions.assertEquals(repo.findFirstById(result.getFirst().getId()).get(), result.getFirst());
         repo.deleteAll().get();
+        Assertions.assertEquals(repo.findAll().get().size(), 0);
+        repo.insert(new TestEntity(20)).get();
+        result = repo.findAll().get();
+        repo.deleteById(result.getFirst().getId()).get();
         Assertions.assertEquals(repo.findAll().get().size(), 0);
     }
 

@@ -7,11 +7,10 @@ Mongo:
   database: "db"
 
 
-# mysql
+# SQL
 SQL:
   connection-string: "jdbc:sqlite:path/to/db/sample.db"
   username: "username" # Not required for sqlite
   password: "password" # Not required for sqlite
 
-# sqlite
 

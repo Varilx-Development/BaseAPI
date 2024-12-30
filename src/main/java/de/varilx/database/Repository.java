@@ -19,4 +19,6 @@ public interface Repository<ENTITY, ID> {
 
     CompletableFuture<Void> deleteAll();
 
+    CompletableFuture<ENTITY> findByFieldName(String name, Object value);
+
 }

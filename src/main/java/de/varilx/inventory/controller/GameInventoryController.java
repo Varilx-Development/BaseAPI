@@ -20,8 +20,8 @@ public class GameInventoryController implements Listener {
 
     List<GameInventory> inventories;
 
-    public GameInventoryController() {
-        Plugin plugin = BaseAPI.getPlugin();
+    public GameInventoryController(BaseAPI baseAPI) {
+        Plugin plugin = baseAPI.getPlugin();
         this.inventories = new ArrayList<>();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }

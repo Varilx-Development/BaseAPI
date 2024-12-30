@@ -10,15 +10,20 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class Service {
+
+    @Getter
+    private final Map<Class<?>, Repository<?, ?>> repositoryMap = new HashMap<>();
 
     public Service(YamlConfiguration configuration, ClassLoader loader, ServiceType type) {
 
     }
 
-    public abstract <ENTITY, ID> Repository<ENTITY, ID> create(String name, Class<ENTITY> entityClazz, Class<ID> idClass);
+    public abstract  <ENTITY, ID> Repository<ENTITY, ID> create(Class<ENTITY> entityClazz, Class<ID> idClass);
 
     public static Service load(YamlConfiguration configuration, ClassLoader loader) {
         @Nullable ServiceType type = ServiceType.findBy(configuration.getString("type"));

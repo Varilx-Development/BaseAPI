@@ -87,6 +87,11 @@ public class MongoRepository<E, ID> implements Repository<E, ID> {
         });
     }
 
+    @Override
+    public CompletableFuture<E> findByFieldName(String name, Object value) {
+        return CompletableFuture.supplyAsync(() -> database.find(Filters.eq(name, value)).first());
+    }
+
     private ID getId(E entity) {
         return ReflectionUtils.getId(entity, idClass);
     }

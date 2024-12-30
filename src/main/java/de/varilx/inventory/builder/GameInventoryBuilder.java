@@ -26,9 +26,11 @@ public class GameInventoryBuilder {
     Character patternCharacter;
     int itemsPerPage;
     List<ClickableItem> pagingItems;
+    BaseAPI baseAPI;
 
-    public GameInventoryBuilder() {
+    public GameInventoryBuilder(BaseAPI baseAPI) {
         this.items = new HashMap<>();
+        this.baseAPI = baseAPI;
     }
 
     public GameInventoryBuilder pattern(String[] pattern) {
@@ -83,7 +85,7 @@ public class GameInventoryBuilder {
         } else {
             shadowInventory = new GameInventory(holder, (inventorySize == 0 ? 9 : inventorySize), inventoryName, pattern, items);
         }
-        BaseAPI.getGameInventoryController().registerInventory(shadowInventory);
+        baseAPI.getGameInventoryController().registerInventory(shadowInventory);
         return shadowInventory;
     }
 

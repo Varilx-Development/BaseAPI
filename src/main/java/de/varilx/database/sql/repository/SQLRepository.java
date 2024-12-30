@@ -19,13 +19,11 @@ public class SQLRepository<E, ID> implements Repository<E, ID> {
     SessionFactory sessionFactory;
     Class<E> entityClass;
     Class<ID> idClass;
-    String name;
 
-    public SQLRepository(SessionFactory sessionFactory, Class<E> entityClass, Class<ID> idClass, String name) {
+    public SQLRepository(SessionFactory sessionFactory, Class<E> entityClass, Class<ID> idClass) {
         this.sessionFactory = sessionFactory;
         this.entityClass = entityClass;
         this.idClass = idClass;
-        this.name = name;
     }
 
 
@@ -98,11 +96,10 @@ public class SQLRepository<E, ID> implements Repository<E, ID> {
         return CompletableFuture.supplyAsync(() -> {
             try (Session session = this.sessionFactory.openSession()) {
                 session.beginTransaction();
-                String query = "SELECT COUNT(1) FROM " + name + " o WHERE o.id = :id";
-                E result = session.createQuery(query, entityClass).setParameter("id", id)
-                        .uniqueResult();
+                String query = "SELECT COUNT(1) FROM " + this.entityClass.getSimpleName() + " o WHERE o.id = :id";
+                Long result = (Long) session.createQuery(query).setParameter("id", id).uniqueResult();
                 session.getTransaction().commit();
-                return result != null;
+                return result != null && result > 0;
             }
         });
     }
@@ -112,10 +109,26 @@ public class SQLRepository<E, ID> implements Repository<E, ID> {
         return CompletableFuture.supplyAsync(() -> {
             try(Session session = this.sessionFactory.openSession()) {
                 session.beginTransaction();
-                String query = "DELETE FROM " + name;
+                String query = "DELETE FROM " + this.entityClass.getSimpleName();
                 session.createMutationQuery(query).executeUpdate();
                 session.getTransaction().commit();
                 return null;
+            }
+        });
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public CompletableFuture<E> findByFieldName(String name, Object value) {
+        return CompletableFuture.supplyAsync(() -> {
+            try(Session session = this.sessionFactory.openSession()) {
+                session.beginTransaction();
+                String hql = "FROM " + entityClass.getName() + " WHERE " + name + " = :value";
+                E result = (E) session.createQuery(hql)
+                        .setParameter("value", value)
+                        .uniqueResult();
+                session.getTransaction().commit();
+                return result;
             }
         });
     }
