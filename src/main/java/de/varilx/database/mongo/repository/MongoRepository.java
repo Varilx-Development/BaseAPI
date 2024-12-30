@@ -1,10 +1,10 @@
-package de.varilx.database.mongo;
+package de.varilx.database.mongo.repository;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import com.mongodb.client.result.UpdateResult;
-import de.varilx.database.Repository;
+import de.varilx.database.repository.Repository;
 import de.varilx.utils.ReflectionUtils;
 import org.bson.conversions.Bson;
 import org.jetbrains.annotations.NotNull;
