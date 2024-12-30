@@ -1,5 +1,6 @@
 package de.varilx;
 
+import de.varilx.command.registry.VaxCommandRegistry;
 import de.varilx.config.Configuration;
 import de.varilx.inventory.controller.GameInventoryController;
 import lombok.AccessLevel;
@@ -25,10 +26,13 @@ public class BaseAPI {
     Configuration configuration;
     Configuration databaseConfiguration;
 
+    VaxCommandRegistry vaxCommandRegistry;
+
     public BaseAPI(JavaPlugin plugin) {
         this.plugin = plugin;
         this.languageConfigurations = new HashMap<>();
         this.gameInventoryController = new GameInventoryController(this);
+        this.vaxCommandRegistry = new VaxCommandRegistry();
         BaseAPI.baseAPI = this;
     }
 
