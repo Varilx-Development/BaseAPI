@@ -1,10 +1,9 @@
-package de.varilx.test;
+package de.varilx.test.list;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,11 +16,13 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TestEntity {
 
-    @jakarta.persistence.Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Id
     UUID id;
 
     int age;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    List<SchoolClass> classes;
 
     public TestEntity(int age) {
         this.age = age;

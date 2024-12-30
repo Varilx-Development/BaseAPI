@@ -8,7 +8,9 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.cfg.Configuration;
 import org.jetbrains.annotations.Nullable;
 import org.reflections.Reflections;
+import sun.misc.Unsafe;
 
+import java.lang.reflect.Field;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,8 +45,22 @@ public class HibernateConfiguration {
         configuration.setProperty("hibernate.hbm2ddl.auto", "update");
         configuration.setProperty("spring.jpa.hibernate.ddl-auto", "auto");
 
-        Logger reflectionsLogger = Logger.getLogger("org.reflections");
-        reflectionsLogger.setLevel(Level.OFF);
+        // Discble Reflections logger
+        try {
+            Reflections.log.getClass();
+            Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
+            unsafeField.setAccessible(true);
+            Unsafe unsafe = (Unsafe) unsafeField.get(null);
+
+            Field field = Reflections.class.getDeclaredField("log");
+
+            Object staticFieldBase = unsafe.staticFieldBase(field);
+
+            long staticFieldOffset = unsafe.staticFieldOffset(field);
+            unsafe.putObject(staticFieldBase, staticFieldOffset, null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
 
         for (Package definedPackage : loader.getDefinedPackages()) {
             Reflections reflections = new Reflections(definedPackage.getName());

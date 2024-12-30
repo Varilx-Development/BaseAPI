@@ -1,8 +1,8 @@
 package de.varilx.test;
 
 
-import de.varilx.database.Repository;
 import de.varilx.database.Service;
+import de.varilx.database.repository.Repository;
 import de.varilx.database.sql.SQLService;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Assertions;

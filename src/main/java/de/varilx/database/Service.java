@@ -21,7 +21,14 @@ public abstract class Service {
 
     }
 
-    public abstract  <ENTITY, ID> Repository<ENTITY, ID> create(Class<ENTITY> entityClazz, Class<ID> idClass);
+    protected abstract <ENTITY, ID> Repository<ENTITY, ID> createRepositoryInternal(Class<ENTITY> entityClazz, Class<ID> idClass);
+
+    public final <ENTITY, ID> Repository<ENTITY, ID> create(Class<ENTITY> entityClazz, Class<ID> idClass) {
+        Repository<ENTITY, ID> repo = createRepositoryInternal(entityClazz, idClass);
+        this.repositoryMap.put(entityClazz, repo);
+        return repo;
+    }
+
 
     public static Service load(YamlConfiguration configuration, ClassLoader loader) {
         @Nullable ServiceType type = ServiceType.findBy(configuration.getString("type"));
