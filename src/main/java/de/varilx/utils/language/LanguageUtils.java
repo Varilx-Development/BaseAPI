@@ -34,7 +34,7 @@ public class LanguageUtils {
         Configuration langConfig = BaseAPI.getBaseAPI().getLanguageConfigurations().get(language);
         List<Component> components = new ArrayList<>();
         langConfig.getConfig().getStringList(path).forEach(line ->
-                components.add(getMessage(language, line, baseResolvers.toArray(TagResolver[]::new)))
+                components.add(MiniMessage.miniMessage().deserialize(line, baseResolvers.toArray(TagResolver[]::new)))
         );
 
         return components;
