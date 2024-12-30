@@ -54,5 +54,24 @@ public class SQLiteTest {
         Assertions.assertEquals(repo.findAll().get().size(), 0);
     }
 
+    @Test
+    public void testUpdate() throws ExecutionException, InterruptedException {
+        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(new StringReader("""
+                type: SQLITE
+                SQL:
+                    connection-string: "jdbc:sqlite:sample.db"
+                """));
+
+        SQLService service = (SQLService) Service.load(configuration, this.getClass().getClassLoader());
+        Repository<TestEntity, UUID> repo = service.create(TestEntity.class, UUID.class);
+
+        repo.deleteAll().get();
+        Assertions.assertEquals(repo.exists(UUID.randomUUID()).get(), false);
+        TestEntity entity = new TestEntity(20);
+        repo.insert(entity).get();
+        entity.setAge(50);
+        repo.save(entity).get();
+        Assertions.assertEquals(repo.findFirstById(entity.getId()).get().getAge(), 50);
+    }
 
 }

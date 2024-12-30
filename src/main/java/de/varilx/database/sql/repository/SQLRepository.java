@@ -69,7 +69,7 @@ public class SQLRepository<E, ID> implements Repository<E, ID> {
         return CompletableFuture.supplyAsync(() -> {
             try(Session session = this.sessionFactory.openSession()) {
                 session.beginTransaction();
-                session.persist(e);
+                session.merge(e);
                 session.getTransaction().commit();
             }
             return null;
@@ -82,7 +82,7 @@ public class SQLRepository<E, ID> implements Repository<E, ID> {
             try(Session session = this.sessionFactory.openSession()) {
                 EntityTransaction transaction = session.getTransaction();
                 transaction.begin();
-                session.save(e);
+                session.persist(e);
                 transaction.commit();
             }
             return null;
