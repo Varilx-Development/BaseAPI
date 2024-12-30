@@ -29,37 +29,37 @@ public class SQLRepository<E, ID> implements Repository<E, ID> {
     @SuppressWarnings("unchecked")
     public CompletableFuture<List<E>> findAll() {
         return CompletableFuture.supplyAsync(() -> {
-            Session session = this.sessionFactory.openSession();
-            session.beginTransaction();
-            String query = "FROM " + entityClass.getSimpleName();
-            List<E> results = session.createQuery(query, entityClass).list();
-            session.getTransaction().commit();
-            session.close();
-            return results;
+            try(Session session = this.sessionFactory.openSession()) {
+                session.beginTransaction();
+                String query = "FROM " + entityClass.getSimpleName();
+                List<E> results = session.createQuery(query, entityClass).list();
+                session.getTransaction().commit();
+                return results;
+            }
         });
     }
 
     @Override
     public CompletableFuture<E> findFirstById(ID id) {
         return CompletableFuture.supplyAsync(() -> {
-            Session session = this.sessionFactory.openSession();
-            session.beginTransaction();
-            E entity = session.get(entityClass, id);
-            session.getTransaction().commit();
-            session.close();
-            return entity;
+            try(Session session = this.sessionFactory.openSession()) {
+                session.beginTransaction();
+                E e = session.get(entityClass, id);
+                session.getTransaction().commit();
+                return e;
+            }
         });
     }
 
     @Override
     public CompletableFuture<Void> deleteById(ID id) {
         return CompletableFuture.supplyAsync(() -> {
-            Session session = this.sessionFactory.openSession();
-            session.beginTransaction();
-            E e = session.get(entityClass, id);
-            session.remove(e);
-            session.getTransaction().commit();
-            session.close();
+            try(Session session = this.sessionFactory.openSession()) {
+                session.beginTransaction();
+                E e = session.get(entityClass, id);
+                session.remove(e);
+                session.getTransaction().commit();
+            }
             return null;
         });
     }
@@ -67,11 +67,11 @@ public class SQLRepository<E, ID> implements Repository<E, ID> {
     @Override
     public CompletableFuture<Void> save(E e) {
         return CompletableFuture.supplyAsync(() -> {
-            Session session = this.sessionFactory.openSession();
-            session.beginTransaction();
-            session.persist(e);
-            session.getTransaction().commit();
-            session.close();
+            try(Session session = this.sessionFactory.openSession()) {
+                session.beginTransaction();
+                session.persist(e);
+                session.getTransaction().commit();
+            }
             return null;
         });
     }
@@ -79,12 +79,12 @@ public class SQLRepository<E, ID> implements Repository<E, ID> {
     @Override
     public CompletableFuture<Void> insert(E e) {
         return CompletableFuture.supplyAsync(() -> {
-            Session session = this.sessionFactory.openSession();
-            EntityTransaction transaction = session.getTransaction();
-            transaction.begin();
-            session.save(e);
-            transaction.commit();
-            session.close();
+            try(Session session = this.sessionFactory.openSession()) {
+                EntityTransaction transaction = session.getTransaction();
+                transaction.begin();
+                session.save(e);
+                transaction.commit();
+            }
             return null;
         });
     }

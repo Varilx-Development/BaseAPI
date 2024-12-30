@@ -3,8 +3,10 @@ package de.varilx.database;
 import de.varilx.database.mongo.MongoService;
 import de.varilx.database.repository.Repository;
 import de.varilx.database.sql.SQLService;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,13 +14,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public abstract class Service {
 
-    @Getter
-    private final Map<Class<?>, Repository<?, ?>> repositoryMap = new HashMap<>();
+    Map<Class<?>, Repository<?, ?>> repositoryMap;
 
     public Service(YamlConfiguration configuration, ClassLoader loader, ServiceType type) {
-
+        repositoryMap = new HashMap<>();
     }
 
     protected abstract <ENTITY, ID> Repository<ENTITY, ID> createRepositoryInternal(Class<ENTITY> entityClazz, Class<ID> idClass);
@@ -29,6 +31,10 @@ public abstract class Service {
         return repo;
     }
 
+
+    public Repository<?, ?> getRepository(Class<?> clazz) {
+        return repositoryMap.get(clazz);
+    }
 
     public static Service load(YamlConfiguration configuration, ClassLoader loader) {
         @Nullable ServiceType type = ServiceType.findBy(configuration.getString("type"));
