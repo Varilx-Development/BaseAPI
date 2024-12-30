@@ -1,4 +1,4 @@
-package de.varilx.database;
+package de.varilx.database.repository;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
