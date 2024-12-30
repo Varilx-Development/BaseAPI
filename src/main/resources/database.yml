@@ -8,6 +8,7 @@ Mongo:
 
 
 # SQL
+# MySQL Connection string: jdbc:mysql://<host>:<port>/<database>
 SQL:
   connection-string: "jdbc:sqlite:path/to/db/sample.db"
   username: "username" # Not required for sqlite
