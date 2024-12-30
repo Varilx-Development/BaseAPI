@@ -23,7 +23,14 @@ public abstract class Service {
         repositoryMap = new HashMap<>();
     }
 
-    public abstract  <ENTITY, ID> Repository<ENTITY, ID> create(Class<ENTITY> entityClazz, Class<ID> idClass);
+    protected abstract <ENTITY, ID> Repository<ENTITY, ID> createRepositoryInternal(Class<ENTITY> entityClazz, Class<ID> idClass);
+
+    public final <ENTITY, ID> Repository<ENTITY, ID> create(Class<ENTITY> entityClazz, Class<ID> idClass) {
+        Repository<ENTITY, ID> repo = createRepositoryInternal(entityClazz, idClass);
+        this.repositoryMap.put(entityClazz, repo);
+        return repo;
+    }
+
 
     public Repository<?, ?> getRepository(Class<?> clazz) {
         return repositoryMap.get(clazz);

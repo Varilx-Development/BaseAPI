@@ -1,19 +1,26 @@
 package de.varilx.test;
 
 
-import de.varilx.database.Repository;
 import de.varilx.database.Service;
+import de.varilx.database.repository.Repository;
 import de.varilx.database.sql.SQLService;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.StringReader;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 public class SQLiteTest {
+
+    @BeforeEach
+    public void delete() {
+        new File("sample.db").delete();
+    }
 
     @Test
     public void testSQL() throws ExecutionException, InterruptedException {

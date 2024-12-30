@@ -1,10 +1,9 @@
-package de.varilx.test;
+package de.varilx.test.list;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,21 +14,23 @@ import java.util.UUID;
 @Setter
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TestEntity {
+public class TestListEntity {
 
-    @jakarta.persistence.Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Id
     UUID id;
 
     int age;
 
-    public TestEntity(int age) {
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    List<SchoolClass> classes;
+
+    public TestListEntity(int age) {
         this.age = age;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof TestEntity entity)) return false;
+        if (!(obj instanceof TestListEntity entity)) return false;
         return entity.getId() == this.id && entity.getAge() == this.age;
     }
 }

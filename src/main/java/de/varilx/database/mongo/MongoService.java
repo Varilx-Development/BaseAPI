@@ -25,12 +25,10 @@ public class MongoService extends Service {
     }
 
     @Override
-    public <ENTITY, ID> Repository<ENTITY, ID> create(Class<ENTITY> entityClazz, Class<ID> idClass) {
+    protected  <ENTITY, ID> Repository<ENTITY, ID> createRepositoryInternal(Class<ENTITY> entityClazz, Class<ID> idClass) {
         if (database.getCollection(entityClazz.getSimpleName()) == null) {
             database.createCollection(entityClazz.getSimpleName());
         }
-        MongoRepository<ENTITY, ID> repo = new MongoRepository<>(database.getCollection(entityClazz.getSimpleName()).withDocumentClass(entityClazz), entityClazz, idClass);
-        this.getRepositoryMap().put(entityClazz, repo);
-        return repo;
+        return new MongoRepository<>(database.getCollection(entityClazz.getSimpleName()).withDocumentClass(entityClazz), entityClazz, idClass);
     }
 }
