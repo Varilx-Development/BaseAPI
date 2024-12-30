@@ -17,7 +17,6 @@ import java.util.Optional;
 @UtilityClass
 public class LanguageUtils {
 
-
     public Component getMessage(String path, TagResolver... args) {
         String language = Optional.ofNullable(BaseAPI.getBaseAPI().getConfiguration().getConfig().getString("language")).orElse("en");
         Configuration langConfig = BaseAPI.getBaseAPI().getLanguageConfigurations().get(language);
@@ -29,6 +28,21 @@ public class LanguageUtils {
         baseResolvers.addAll(Arrays.stream(args).toList());
 
         return getMessage(language, path, baseResolvers.toArray(TagResolver[]::new));
+    }
+
+    public List<Component> getMessageList(String path, TagResolver... args) {
+        String language = Optional.ofNullable(BaseAPI.getBaseAPI().getConfiguration().getConfig().getString("language")).orElse("en");
+        Configuration langConfig = BaseAPI.getBaseAPI().getLanguageConfigurations().get(language);
+
+        List<TagResolver> baseResolvers = new ArrayList<>();
+
+        @Nullable String prefix = langConfig.getConfig().getString("prefix");
+        if (prefix != null) baseResolvers.add(Placeholder.parsed("prefix", prefix));
+        baseResolvers.addAll(Arrays.stream(args).toList());
+
+        List<Component> components = new ArrayList<>();
+        langConfig.getConfig().getStringList(path).forEach(line -> components.add(getMessage(language, line, baseResolvers.toArray(TagResolver[]::new))));
+        return components;
     }
 
     public String getMessageString(String path) {
