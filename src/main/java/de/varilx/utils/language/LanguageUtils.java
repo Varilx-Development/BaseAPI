@@ -7,6 +7,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -18,30 +19,24 @@ import java.util.Optional;
 public class LanguageUtils {
 
     public Component getMessage(String path, TagResolver... args) {
-        String language = Optional.ofNullable(BaseAPI.getBaseAPI().getConfiguration().getConfig().getString("language")).orElse("en");
-        Configuration langConfig = BaseAPI.getBaseAPI().getLanguageConfigurations().get(language);
-
-        List<TagResolver> baseResolvers = new ArrayList<>();
-
-        @Nullable String prefix = langConfig.getConfig().getString("prefix");
-        if (prefix != null) baseResolvers.add(Placeholder.parsed("prefix", prefix));
-        baseResolvers.addAll(Arrays.stream(args).toList());
+        Pair<String, List<TagResolver>> languageAndResolvers = initializeLanguageAndResolvers(args);
+        String language = languageAndResolvers.getLeft();
+        List<TagResolver> baseResolvers = languageAndResolvers.getRight();
 
         return getMessage(language, path, baseResolvers.toArray(TagResolver[]::new));
     }
 
     public List<Component> getMessageList(String path, TagResolver... args) {
-        String language = Optional.ofNullable(BaseAPI.getBaseAPI().getConfiguration().getConfig().getString("language")).orElse("en");
+        Pair<String, List<TagResolver>> languageAndResolvers = initializeLanguageAndResolvers(args);
+        String language = languageAndResolvers.getLeft();
+        List<TagResolver> baseResolvers = languageAndResolvers.getRight();
+
         Configuration langConfig = BaseAPI.getBaseAPI().getLanguageConfigurations().get(language);
-
-        List<TagResolver> baseResolvers = new ArrayList<>();
-
-        @Nullable String prefix = langConfig.getConfig().getString("prefix");
-        if (prefix != null) baseResolvers.add(Placeholder.parsed("prefix", prefix));
-        baseResolvers.addAll(Arrays.stream(args).toList());
-
         List<Component> components = new ArrayList<>();
-        langConfig.getConfig().getStringList(path).forEach(line -> components.add(getMessage(language, line, baseResolvers.toArray(TagResolver[]::new))));
+        langConfig.getConfig().getStringList(path).forEach(line ->
+                components.add(getMessage(language, line, baseResolvers.toArray(TagResolver[]::new)))
+        );
+
         return components;
     }
 
@@ -64,6 +59,18 @@ public class LanguageUtils {
             return Component.text("Path: " + path + " not found!");
         }
         return MiniMessage.miniMessage().deserialize(raw, args);
+    }
+
+    private Pair<String, List<TagResolver>> initializeLanguageAndResolvers(TagResolver... args) {
+        String language = Optional.ofNullable(BaseAPI.getBaseAPI().getConfiguration().getConfig().getString("language")).orElse("en");
+        Configuration langConfig = BaseAPI.getBaseAPI().getLanguageConfigurations().get(language);
+        
+        List<TagResolver> baseResolvers = new ArrayList<>();
+        @Nullable String prefix = langConfig.getConfig().getString("prefix");
+        if (prefix != null) baseResolvers.add(Placeholder.parsed("prefix", prefix));
+        baseResolvers.addAll(Arrays.stream(args).toList());
+
+        return Pair.of(language, baseResolvers);
     }
 
 }
