@@ -1,11 +1,11 @@
 package de.varilx.database.mongo;
 
-import com.google.common.reflect.ClassPath;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
-import de.varilx.database.Repository;
+import de.varilx.database.repository.Repository;
 import de.varilx.database.Service;
+import de.varilx.database.mongo.repository.MongoRepository;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.bukkit.configuration.file.YamlConfiguration;
