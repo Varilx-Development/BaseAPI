@@ -1,6 +1,6 @@
 package de.varilx.utils;
 
-import de.varilx.database.id.Id;
+import de.varilx.database.id.MongoId;
 import lombok.experimental.UtilityClass;
 
 import java.lang.reflect.Field;
@@ -12,7 +12,7 @@ public class ReflectionUtils {
     public <ID> ID getId(Object object, Class<ID> idClass) {
         for (Field field : object.getClass().getDeclaredFields()) {
             if (!field.getType().equals(idClass)) continue;
-            if (field.isAnnotationPresent(Id.class)) {
+            if (field.isAnnotationPresent(MongoId.class)) {
                 try {
                     return (ID) field.get(object);
                 } catch (IllegalAccessException e) {
