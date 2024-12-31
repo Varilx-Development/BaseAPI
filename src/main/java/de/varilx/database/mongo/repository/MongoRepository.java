@@ -42,7 +42,7 @@ public class MongoRepository<E, ID> implements Repository<E, ID> {
 
     @Override
     public CompletableFuture<Void> deleteById(ID id) {
-       return CompletableFuture.supplyAsync(() -> {
+        return CompletableFuture.supplyAsync(() -> {
             this.database.deleteOne(createIdFilter(id));
             return null;
         });
@@ -50,24 +50,22 @@ public class MongoRepository<E, ID> implements Repository<E, ID> {
 
     @Override
     public CompletableFuture<Void> save(E e) {
-      return   CompletableFuture.supplyAsync(() -> {
+        return CompletableFuture.supplyAsync(() -> {
             Bson idFilter = createIdFilter(getId(e));
             if (database.countDocuments(idFilter) > 0) {
                 UpdateResult result = database.replaceOne(idFilter, e, new ReplaceOptions().upsert(true));
                 return null;
             }
             database.insertOne(e);
-          return null;
-
+            return null;
         });
     }
 
     @Override
     public CompletableFuture<Void> insert(E e) {
-       return CompletableFuture.supplyAsync(() -> {
+        return CompletableFuture.supplyAsync(() -> {
             database.insertOne(e);
-           return null;
-
+            return null;
         });
     }
 

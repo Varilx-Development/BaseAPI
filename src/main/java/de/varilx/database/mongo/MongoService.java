@@ -1,5 +1,7 @@
 package de.varilx.database.mongo;
 
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
@@ -8,9 +10,18 @@ import de.varilx.database.Service;
 import de.varilx.database.mongo.repository.MongoRepository;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.bson.UuidRepresentation;
+import org.bson.codecs.configuration.CodecRegistries;
+import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.codecs.pojo.Conventions;
+import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.util.List;
 import java.util.Objects;
+
+import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
+import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class MongoService extends Service {
@@ -20,8 +31,27 @@ public class MongoService extends Service {
 
     public MongoService(YamlConfiguration configuration, ClassLoader loader, ServiceType type) {
         super(configuration, loader, type);
-        this.client = MongoClients.create(Objects.requireNonNull(configuration.getString("connection-string"), "No Connection String given"));
-        this.database = client.getDatabase(Objects.requireNonNull(configuration.getString("database"), "No database given"));
+
+        CodecRegistry codecRegistry =  fromRegistries(
+                MongoClientSettings.getDefaultCodecRegistry(),
+                fromProviders(PojoCodecProvider.builder()
+                        .automatic(true)
+                        .conventions(List.of(
+                                Conventions.ANNOTATION_CONVENTION,
+                                Conventions.SET_PRIVATE_FIELDS_CONVENTION
+//                    Conventions.USE_GETTERS_FOR_SETTERS
+                        ))
+                        .build())
+        );
+
+        MongoClientSettings settings = MongoClientSettings.builder()
+                .applyConnectionString(new ConnectionString(Objects.requireNonNull(configuration.getString("Mongo.connection-string"), "No Connection String given")))
+                .codecRegistry(codecRegistry)
+                .uuidRepresentation(UuidRepresentation.STANDARD)
+                .build();
+
+        this.client = MongoClients.create(settings);
+        this.database = client.getDatabase(Objects.requireNonNull(configuration.getString("Mongo.database"), "No database given"));
     }
 
     @Override
