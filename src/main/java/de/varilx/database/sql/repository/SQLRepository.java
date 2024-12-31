@@ -26,6 +26,19 @@ public class SQLRepository<E, ID> implements Repository<E, ID> {
 
 
     @Override
+    public CompletableFuture<List<E>> sortAll(String field, boolean ascending, int limit) {
+        return CompletableFuture.supplyAsync(() -> {
+            try(Session session = this.sessionFactory.openSession()) {
+                session.beginTransaction();
+                String query = "FROM " + entityClass.getSimpleName() + " e ORDER BY e." + field + " " + (ascending ? "ASC" : "DESC");
+                List<E> results = session.createQuery(query, entityClass).setMaxResults(limit).list();
+                session.getTransaction().commit();
+                return results;
+            }
+        });
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public CompletableFuture<List<E>> findAll() {
         return CompletableFuture.supplyAsync(() -> {

@@ -3,6 +3,7 @@ package de.varilx.database.mongo.repository;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
+import com.mongodb.client.model.Sorts;
 import com.mongodb.client.result.UpdateResult;
 import de.varilx.database.repository.Repository;
 import de.varilx.utils.ReflectionUtils;
@@ -25,6 +26,15 @@ public class MongoRepository<E, ID> implements Repository<E, ID> {
         this.idClass = idClass;
     }
 
+
+    @Override
+    public CompletableFuture<List<E>> sortAll(String field, boolean ascending, int limit) {
+        return CompletableFuture.supplyAsync(() -> {
+            return this.database.find()
+                    .sort(ascending ? Sorts.ascending(field) : Sorts.descending(field))
+                    .limit(limit).into(new ArrayList<>());
+        });
+    }
 
     @Override
     public CompletableFuture<List<E>> findAll() {

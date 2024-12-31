@@ -5,6 +5,8 @@ import java.util.concurrent.CompletableFuture;
 
 public interface Repository<ENTITY, ID> {
 
+    CompletableFuture<List<ENTITY>> sortAll(String field, boolean ascending, int limit);
+
     CompletableFuture<List<ENTITY>> findAll();
 
     CompletableFuture<ENTITY> findFirstById(ID id);
