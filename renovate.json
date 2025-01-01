@@ -2,8 +2,8 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    ":assignee(Knerio,VAXShadow1929)",
-    ":reviewer(Knerio,VAXShadow1929)",
     ":label(dependencies)"
-  ]
+  ],
+  "assignees": ["Knerio", "VAXShadow1929"],
+  "reviewers": ["Knerio", "VAXShadow1929"]
 }
