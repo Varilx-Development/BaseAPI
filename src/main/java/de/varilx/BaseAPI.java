@@ -2,6 +2,7 @@ package de.varilx;
 
 import de.varilx.config.Configuration;
 import de.varilx.inventory.controller.GameInventoryController;
+import de.varilx.utils.Metrics;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
@@ -21,14 +22,19 @@ public class BaseAPI {
     final JavaPlugin plugin;
     final GameInventoryController gameInventoryController;
     final Map<String, Configuration> languageConfigurations;
+    final Metrics metrics;
+
+    final int pluginId;
 
     Configuration configuration;
     Configuration databaseConfiguration;
 
-    public BaseAPI(JavaPlugin plugin) {
+    public BaseAPI(JavaPlugin plugin, int pluginId) {
         this.plugin = plugin;
+        this.pluginId = pluginId;
         this.languageConfigurations = new HashMap<>();
         this.gameInventoryController = new GameInventoryController(this);
+        this.metrics = new Metrics(plugin, pluginId);
         BaseAPI.baseAPI = this;
     }
 
@@ -44,6 +50,7 @@ public class BaseAPI {
             Configuration config = new Configuration(plugin.getDataFolder(), "lang/" + locale.getLanguage() + ".yml");
             this.languageConfigurations.put(locale.getLanguage(), config);
         });
+        metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> configuration.getConfig().getString("language")));
     }
 
 }
