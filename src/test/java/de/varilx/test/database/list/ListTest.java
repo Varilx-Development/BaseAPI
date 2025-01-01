@@ -1,16 +1,15 @@
-package de.varilx.test.list;
+package de.varilx.test.database.list;
 
+import de.varilx.config.Configuration;
 import de.varilx.database.Service;
 import de.varilx.database.repository.Repository;
 import de.varilx.database.sql.SQLService;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -29,11 +28,11 @@ public class ListTest {
 
     @Test
     public void test() throws ExecutionException, InterruptedException {
-        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(new StringReader("""
+        Configuration configuration = new Configuration("""
                 type: SQLITE
                 SQL:
                     connection-string: "jdbc:sqlite:sample.db"
-                """));
+                """);
 
         SQLService service = (SQLService) Service.load(configuration, this.getClass().getClassLoader());
         Repository<TestListEntity, UUID> repo = service.create(TestListEntity.class, UUID.class);

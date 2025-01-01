@@ -1,4 +1,4 @@
-package de.varilx.test.json;
+package de.varilx.test.database.json;
 
 import de.varilx.database.id.MongoId;
 import jakarta.persistence.*;
@@ -6,7 +6,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.bson.types.Binary;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity

@@ -1,18 +1,12 @@
-package de.varilx.test.json;
+package de.varilx.test.database.json;
 
+import de.varilx.config.Configuration;
 import de.varilx.database.Service;
 import de.varilx.database.repository.Repository;
-import de.varilx.database.sql.SQLService;
 import org.bson.types.Binary;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -20,12 +14,11 @@ public class ByteTest {
 
     @Test
     public void test() throws ExecutionException, InterruptedException {
-        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(new StringReader("""
-                type: Mongo
-                Mongo:
-                    connection-string: "mongodb://localhost:27017/testdb"
-                    database: testdb
-                """));
+        Configuration configuration = new Configuration("""
+                type: SQLITE
+                SQL:
+                    connection-string: "jdbc:sqlite:sample.db"
+                """);
 
         Service service = Service.load(configuration, this.getClass().getClassLoader());
         Repository<BinaryTestEntity, UUID> repo = service.create(BinaryTestEntity.class, UUID.class);

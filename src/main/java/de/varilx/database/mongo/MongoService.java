@@ -5,6 +5,7 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
+import de.varilx.config.Configuration;
 import de.varilx.database.repository.Repository;
 import de.varilx.database.Service;
 import de.varilx.database.mongo.repository.MongoRepository;
@@ -29,7 +30,7 @@ public class MongoService extends Service {
     MongoClient client;
     MongoDatabase database;
 
-    public MongoService(YamlConfiguration configuration, ClassLoader loader, ServiceType type) {
+    public MongoService(Configuration configuration, ClassLoader loader, ServiceType type) {
         super(configuration, loader, type);
 
         CodecRegistry codecRegistry =  fromRegistries(
@@ -39,7 +40,6 @@ public class MongoService extends Service {
                         .conventions(List.of(
                                 Conventions.ANNOTATION_CONVENTION,
                                 Conventions.SET_PRIVATE_FIELDS_CONVENTION
-//                    Conventions.USE_GETTERS_FOR_SETTERS
                         ))
                         .build())
         );

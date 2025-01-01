@@ -1,17 +1,16 @@
-package de.varilx.test;
+package de.varilx.test.database;
 
 
+import de.varilx.config.Configuration;
 import de.varilx.database.Service;
 import de.varilx.database.repository.Repository;
 import de.varilx.database.sql.SQLService;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.StringReader;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -30,11 +29,11 @@ public class SQLiteTest {
 
     @Test
     public void testSQL() throws ExecutionException, InterruptedException {
-        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(new StringReader("""
+        Configuration configuration = new Configuration("""
                 type: SQLITE
                 SQL:
                     connection-string: "jdbc:sqlite:sample.db"
-                """));
+                """);
 
         SQLService service = (SQLService) Service.load(configuration, this.getClass().getClassLoader());
         Repository<TestEntity, UUID> repo = service.create(TestEntity.class, UUID.class);
@@ -56,11 +55,11 @@ public class SQLiteTest {
 
     @Test
     public void testUpdate() throws ExecutionException, InterruptedException {
-        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(new StringReader("""
+        Configuration configuration = new Configuration("""
                 type: SQLITE
                 SQL:
                     connection-string: "jdbc:sqlite:sample.db"
-                """));
+                """);
 
         SQLService service = (SQLService) Service.load(configuration, this.getClass().getClassLoader());
         Repository<TestEntity, UUID> repo = service.create(TestEntity.class, UUID.class);

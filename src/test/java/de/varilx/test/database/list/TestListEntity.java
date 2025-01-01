@@ -1,4 +1,4 @@
-package de.varilx.test.list;
+package de.varilx.test.database.list;
 
 import jakarta.persistence.*;
 import lombok.*;

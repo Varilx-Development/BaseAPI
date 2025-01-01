@@ -1,4 +1,4 @@
-package de.varilx.test.sort;
+package de.varilx.test.database.sort;
 
 import jakarta.persistence.*;
 import lombok.*;

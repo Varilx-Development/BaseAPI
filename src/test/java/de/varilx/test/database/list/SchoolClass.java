@@ -1,4 +1,4 @@
-package de.varilx.test.list;
+package de.varilx.test.database.list;
 
 import de.varilx.database.id.MongoId;
 import jakarta.persistence.*;
