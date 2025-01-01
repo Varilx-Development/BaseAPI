@@ -22,7 +22,7 @@ dependencies {
     testImplementation("org.mongodb:mongodb-driver-sync:5.2.1")
 
     // Hibernate and Jakarta
-    implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
+    implementation("jakarta.persistence:jakarta.persistence-api:3.2.0")
     implementation("org.hibernate:hibernate-core:6.3.1.Final")
     implementation("org.hibernate.orm:hibernate-community-dialects:6.3.0.Final")
     testImplementation("org.hibernate.orm:hibernate-community-dialects:6.3.0.Final")
