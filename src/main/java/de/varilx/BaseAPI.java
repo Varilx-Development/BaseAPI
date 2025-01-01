@@ -50,7 +50,11 @@ public class BaseAPI {
             Configuration config = new Configuration(plugin.getDataFolder(), "lang/" + locale.getLanguage() + ".yml");
             this.languageConfigurations.put(locale.getLanguage(), config);
         });
-        metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> configuration.getConfig().getString("language")));
+        metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> {
+            String language = configuration.getConfig().getString("language", "en");
+            if (!this.languageConfigurations.containsKey(language)) return "en";
+            return language;
+        }));
     }
 
 }
