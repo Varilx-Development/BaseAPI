@@ -111,6 +111,25 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
         });
     }
 
+    /**
+     * Adds the given {@link Component} as the last lore entry to the item's lore list.
+     *
+     * If the item currently has no lore, an empty lore list will be created before adding the component.
+     * This method ensures that the provided component is appended at the end of the lore list.
+     *
+     * @param component the {@link Component} to be added as the last lore entry
+     * @return this builder instance to allow for method chaining
+     * @see ItemMeta#lore(List)
+     */
+    public B addLastLore(Component component) {
+        return this.editMeta(meta -> {
+            List<Component> lore = meta.lore();
+            if (lore == null) lore = new ArrayList<>();
+            lore.addLast(component);
+            meta.lore(lore);
+        });
+    }
+
 
     /**
      * Sets the displayname of the itemstack
