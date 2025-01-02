@@ -7,12 +7,15 @@ import java.io.*;
 
 public class VaxConfiguration extends YamlConfiguration {
 
-    private YamlConfiguration config;
     private final File configFile;
 
     public VaxConfiguration(String yaml) {
         this.configFile = null;
-        this.config = YamlConfiguration.loadConfiguration(new StringReader(yaml));
+        try {
+            this.load(new StringReader(yaml));
+        } catch (IOException | InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public VaxConfiguration(File dataFolder, String configName) {
@@ -22,19 +25,24 @@ public class VaxConfiguration extends YamlConfiguration {
 
         this.configFile = new File(dataFolder, configName);
 
-        this.config = YamlConfiguration.loadConfiguration(configFile);
 
         if (!configFile.exists()) {
             try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(configName)) {
                 if (inputStream != null) {
                     YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
                     defaultConfig.save(configFile);
-                    this.config.setDefaults(defaultConfig);
+                    setDefaults(defaultConfig);
                 } else {
                     System.out.println("Could not find resource: " + configName);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        } else {
+            try {
+                this.load(configFile);
+            } catch (IOException | InvalidConfigurationException e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -45,7 +53,7 @@ public class VaxConfiguration extends YamlConfiguration {
             return;
         }
         try {
-            this.config.load(this.configFile);
+            this.load(this.configFile);
         } catch (IOException | InvalidConfigurationException e) {
             throw new RuntimeException(e);
         }
@@ -57,7 +65,7 @@ public class VaxConfiguration extends YamlConfiguration {
             return;
         }
         try {
-            config.save(configFile);
+            this.save(configFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
