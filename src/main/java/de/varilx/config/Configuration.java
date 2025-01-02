@@ -75,12 +75,27 @@ public class Configuration {
         return o.toString();
     }
 
+    public String getString(String path, String defaultValue) {
+        Object o = this.get(path, defaultValue);
+        if (o instanceof String s) return s;
+        if (o == null) return null;
+        return o.toString();
+    }
+
     public Object get(String path) {
         return this.get(path, Object.class);
     }
 
+    public Object get(String path, Object defaultValue) {
+        return this.get(path, Object.class, defaultValue);
+    }
+
     public <T> T get(String path, Class<T> clazz) {
         return (T) this.getValue(path, null);
+    }
+
+    public <T> T get(String path, Class<T> clazz, T defaultValue) {
+        return (T) this.getValue(path, defaultValue);
     }
 
     public List<String> getStringList(String path) {
