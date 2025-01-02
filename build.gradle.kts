@@ -24,8 +24,8 @@ dependencies {
     // Hibernate and Jakarta
     implementation("jakarta.persistence:jakarta.persistence-api:3.2.0")
     implementation("org.hibernate:hibernate-core:6.6.4.Final")
-    implementation("org.hibernate.orm:hibernate-community-dialects:6.3.0.Final")
-    testImplementation("org.hibernate.orm:hibernate-community-dialects:6.3.0.Final")
+    implementation("org.hibernate.orm:hibernate-community-dialects:6.6.4.Final")
+    testImplementation("org.hibernate.orm:hibernate-community-dialects:6.6.4.Final")
 
     // SQLite
     implementation("org.xerial:sqlite-jdbc:3.47.1.0")
