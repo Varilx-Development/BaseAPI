@@ -22,6 +22,9 @@ public abstract class BaseAPI {
         return Logger.getLogger("BaseAPI");
     }
 
+    public abstract boolean isDatabaseDisabled();
+
+
     @Nullable // When enable is not called
     public abstract VaxConfiguration getDatabaseConfiguration();
     @Nullable // When enable is not called

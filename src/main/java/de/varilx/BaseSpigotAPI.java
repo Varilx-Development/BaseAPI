@@ -24,6 +24,8 @@ public class BaseSpigotAPI extends BaseAPI {
 
     final int pluginId;
 
+    boolean isDatabaseDisabled = false;
+
     VaxConfiguration configuration;
     VaxConfiguration databaseConfiguration;
 
@@ -36,9 +38,14 @@ public class BaseSpigotAPI extends BaseAPI {
         BaseAPI.set(this);
     }
 
+    public BaseSpigotAPI disableDatabase() {
+        this.isDatabaseDisabled = true;
+        return this;
+    }
+
     public void enable() {
         this.databaseConfiguration = new VaxConfiguration(plugin.getDataFolder(), "database.yml");
-        this.configuration = new VaxConfiguration(plugin.getDataFolder(), "config.yml");
+        if (!this.isDatabaseDisabled()) this.configuration = new VaxConfiguration(plugin.getDataFolder(), "config.yml");
 
         Locale.availableLocales().forEach(locale -> {
             @Nullable InputStream resource = plugin.getResource("lang/" + locale.getLanguage() + ".yml");
@@ -68,6 +75,11 @@ public class BaseSpigotAPI extends BaseAPI {
     @Override
     public Logger getLogger() {
         return this.plugin.getLogger();
+    }
+
+    @Override
+    public boolean isDatabaseDisabled() {
+        return this.isDatabaseDisabled;
     }
 
     @Override

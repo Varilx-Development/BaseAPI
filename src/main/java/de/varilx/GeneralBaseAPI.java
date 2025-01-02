@@ -22,6 +22,8 @@ public class GeneralBaseAPI extends BaseAPI {
     final File dataFolder;
     final ClassLoader loader;
 
+    boolean isDatabaseDisabled = false;
+
     @Nullable
     VaxConfiguration configuration;
     @Nullable
@@ -32,6 +34,11 @@ public class GeneralBaseAPI extends BaseAPI {
         this.dataFolder = dataFolder;
         this.languageConfigurations = new HashMap<>();
         BaseAPI.set(this);
+    }
+
+    public GeneralBaseAPI disableDatabase() {
+        this.isDatabaseDisabled = true;
+        return this;
     }
 
     public void enable() {
@@ -61,6 +68,11 @@ public class GeneralBaseAPI extends BaseAPI {
     @Override
     public Logger getLogger() {
         return log;
+    }
+
+    @Override
+    public boolean isDatabaseDisabled() {
+        return this.isDatabaseDisabled;
     }
 
     @Override
