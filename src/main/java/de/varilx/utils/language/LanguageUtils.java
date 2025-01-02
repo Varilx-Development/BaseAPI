@@ -22,7 +22,7 @@ public class LanguageUtils {
             BaseAPI.get().getLogger().warning(path + " was not found in lang/" + BaseAPI.get().getLanguage() + ".yml");
             return Component.text("Path: " + path + " not found!");
         }
-        return MiniMessage.miniMessage().deserialize("<!i><gray>" + raw, args);
+        return MiniMessage.miniMessage().deserialize("<!i><gray>" + raw, initializeLanguageAndResolvers(args).toArray(TagResolver[]::new));
     }
 
     public List<Component> getMessageList(String path, TagResolver... args) {
