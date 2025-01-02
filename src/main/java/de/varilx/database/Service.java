@@ -37,7 +37,6 @@ public abstract class Service {
     }
 
     public static Service load(VaxConfiguration configuration, ClassLoader loader) {
-        System.out.println(configuration.getString("type"));
         @Nullable ServiceType type = ServiceType.findBy(configuration.getString("type"));
         if (type == null) throw new RuntimeException("No Database Type found");
         try {
