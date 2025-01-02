@@ -33,7 +33,7 @@ jobs:
         run: |
           VERSION=${{ github.event.release.name }}
           if [ "${{ github.event.release.prerelease }}" = "true" ]; then
-            FULL_VERSION="${VERSION}-commit-${COMMIT_HASH}"
+            FULL_VERSION="${VERSION}-experimental-${COMMIT_HASH}"
           else
             FULL_VERSION="${VERSION}"
           fi
