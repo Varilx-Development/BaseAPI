@@ -1,6 +1,7 @@
 package de.varilx.inventory.controller;
 
 import de.varilx.BaseAPI;
+import de.varilx.BaseSpigotAPI;
 import de.varilx.inventory.GameInventory;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -21,7 +22,7 @@ public class GameInventoryController implements Listener {
     List<GameInventory> inventories;
 
     public GameInventoryController(BaseAPI baseAPI) {
-        Plugin plugin = baseAPI.getPlugin();
+        Plugin plugin = ((BaseSpigotAPI) baseAPI).getPlugin();
         this.inventories = new ArrayList<>();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
