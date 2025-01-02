@@ -1,24 +1,22 @@
-package de.varilx.config;
+package de.varilx.configuration;
 
-import de.varilx.utils.ResourceUtils;
-import lombok.AccessLevel;
+import de.varilx.configuration.file.YamlConfiguration;
 import lombok.Getter;
-import lombok.experimental.FieldDefaults;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
-public class Configuration {
+public class VaxConfiguration {
 
     @Getter
     private YamlConfiguration config;
     private final File configFile;
 
-    public Configuration(File dataFolder, String configName) {
+    public VaxConfiguration(String yaml) {
+        this.configFile = null;
+        this.config = YamlConfiguration.loadConfiguration(new StringReader(yaml));
+    }
+
+    public VaxConfiguration(File dataFolder, String configName) {
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
         }
@@ -54,4 +52,11 @@ public class Configuration {
         }
     }
 
+    public String getString(String path) {
+        return this.config.getString(path);
+    }
+
+    public String getString(String path, String defaultValue) {
+        return this.config.getString(path, defaultValue);
+    }
 }

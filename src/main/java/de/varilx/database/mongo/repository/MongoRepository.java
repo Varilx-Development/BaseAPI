@@ -12,7 +12,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collector;
 
 public class MongoRepository<E, ID> implements Repository<E, ID> {
 
@@ -97,7 +99,19 @@ public class MongoRepository<E, ID> implements Repository<E, ID> {
 
     @Override
     public CompletableFuture<E> findByFieldName(String name, Object value) {
-        return CompletableFuture.supplyAsync(() -> database.find(Filters.eq(name, value)).first());
+        return this.findByFieldNames(Map.of(name, value));
+    }
+
+    @Override
+    public CompletableFuture<E> findByFieldNames(Map<String, Object> values) {
+
+        return CompletableFuture.supplyAsync(() -> {
+            Bson filter = Filters.empty();
+            for (Map.Entry<String, Object> entry : values.entrySet()) {
+                filter = Filters.and(filter, Filters.eq(entry.getKey(), entry.getValue()));
+            }
+            return database.find(filter).first();
+        });
     }
 
     private ID getId(E entity) {

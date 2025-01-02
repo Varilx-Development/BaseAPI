@@ -1,6 +1,9 @@
 package de.varilx.database.repository;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public interface Repository<ENTITY, ID> {
@@ -22,5 +25,7 @@ public interface Repository<ENTITY, ID> {
     CompletableFuture<Void> deleteAll();
 
     CompletableFuture<ENTITY> findByFieldName(String name, Object value);
+
+    CompletableFuture<ENTITY> findByFieldNames(Map<String, Object> values);
 
 }

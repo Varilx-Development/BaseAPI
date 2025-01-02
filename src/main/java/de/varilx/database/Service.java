@@ -1,5 +1,6 @@
 package de.varilx.database;
 
+import de.varilx.configuration.VaxConfiguration;
 import de.varilx.database.mongo.MongoService;
 import de.varilx.database.repository.Repository;
 import de.varilx.database.sql.SQLService;
@@ -7,7 +8,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -19,7 +19,7 @@ public abstract class Service {
 
     Map<Class<?>, Repository<?, ?>> repositoryMap;
 
-    public Service(YamlConfiguration configuration, ClassLoader loader, ServiceType type) {
+    public Service(VaxConfiguration configuration, ClassLoader loader, ServiceType type) {
         repositoryMap = new HashMap<>();
     }
 
@@ -36,7 +36,7 @@ public abstract class Service {
         return repositoryMap.get(clazz);
     }
 
-    public static Service load(YamlConfiguration configuration, ClassLoader loader) {
+    public static Service load(VaxConfiguration configuration, ClassLoader loader) {
         @Nullable ServiceType type = ServiceType.findBy(configuration.getString("type"));
         if (type == null) throw new RuntimeException("No Database Type found");
         try {
