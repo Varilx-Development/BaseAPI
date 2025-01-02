@@ -1,6 +1,6 @@
 package de.varilx.database;
 
-import de.varilx.config.Configuration;
+import de.varilx.configuration.VaxConfiguration;
 import de.varilx.database.mongo.MongoService;
 import de.varilx.database.repository.Repository;
 import de.varilx.database.sql.SQLService;
@@ -19,7 +19,7 @@ public abstract class Service {
 
     Map<Class<?>, Repository<?, ?>> repositoryMap;
 
-    public Service(Configuration configuration, ClassLoader loader, ServiceType type) {
+    public Service(VaxConfiguration configuration, ClassLoader loader, ServiceType type) {
         repositoryMap = new HashMap<>();
     }
 
@@ -36,8 +36,8 @@ public abstract class Service {
         return repositoryMap.get(clazz);
     }
 
-    public static Service load(Configuration configuration, ClassLoader loader) {
-        @Nullable ServiceType type = ServiceType.findBy((String) configuration.get("type"));
+    public static Service load(VaxConfiguration configuration, ClassLoader loader) {
+        @Nullable ServiceType type = ServiceType.findBy(configuration.getString("type"));
         if (type == null) throw new RuntimeException("No Database Type found");
         try {
             return (Service) type.getClazz().getDeclaredConstructors()[0].newInstance(configuration, loader, type);

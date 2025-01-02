@@ -1,6 +1,6 @@
 package de.varilx.database.sql;
 
-import de.varilx.config.Configuration;
+import de.varilx.configuration.VaxConfiguration;
 import de.varilx.database.repository.Repository;
 import de.varilx.database.Service;
 import de.varilx.database.sql.configuration.HibernateConfiguration;
@@ -17,7 +17,7 @@ public class SQLService extends Service {
 
     SessionFactory sessionFactory;
 
-    public SQLService(Configuration configuration, ClassLoader loader, ServiceType type) {
+    public SQLService(VaxConfiguration configuration, ClassLoader loader, ServiceType type) {
         super(configuration, loader, type);
         HibernateConfiguration hibernateConfiguration = new HibernateConfiguration(
                 configuration.getString("SQL.connection-string"),

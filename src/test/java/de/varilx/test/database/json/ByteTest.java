@@ -1,6 +1,6 @@
 package de.varilx.test.database.json;
 
-import de.varilx.config.Configuration;
+import de.varilx.configuration.VaxConfiguration;
 import de.varilx.database.Service;
 import de.varilx.database.repository.Repository;
 import org.bson.types.Binary;
@@ -14,7 +14,7 @@ public class ByteTest {
 
     @Test
     public void test() throws ExecutionException, InterruptedException {
-        Configuration configuration = new Configuration("""
+        VaxConfiguration configuration = new VaxConfiguration("""
                 type: SQLITE
                 SQL:
                     connection-string: "jdbc:sqlite:sample.db"

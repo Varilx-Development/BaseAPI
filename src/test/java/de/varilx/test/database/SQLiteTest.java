@@ -1,7 +1,7 @@
 package de.varilx.test.database;
 
 
-import de.varilx.config.Configuration;
+import de.varilx.configuration.VaxConfiguration;
 import de.varilx.database.Service;
 import de.varilx.database.repository.Repository;
 import de.varilx.database.sql.SQLService;
@@ -29,7 +29,7 @@ public class SQLiteTest {
 
     @Test
     public void testSQL() throws ExecutionException, InterruptedException {
-        Configuration configuration = new Configuration("""
+        VaxConfiguration configuration = new VaxConfiguration("""
                 type: SQLITE
                 SQL:
                     connection-string: "jdbc:sqlite:sample.db"
@@ -55,7 +55,7 @@ public class SQLiteTest {
 
     @Test
     public void testUpdate() throws ExecutionException, InterruptedException {
-        Configuration configuration = new Configuration("""
+        VaxConfiguration configuration = new VaxConfiguration("""
                 type: SQLITE
                 SQL:
                     connection-string: "jdbc:sqlite:sample.db"
