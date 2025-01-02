@@ -28,11 +28,6 @@ public class Configuration {
 
         this.configFile = new File(dataFolder, configName);
 
-        try {
-            this.config = new Yaml().load(new FileInputStream(configFile));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
 
         if (!configFile.exists()) {
             try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(configName)) {
@@ -44,6 +39,12 @@ public class Configuration {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        } else {
+            try {
+                this.config = new Yaml().load(new FileInputStream(configFile));
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
             }
         }
     }
