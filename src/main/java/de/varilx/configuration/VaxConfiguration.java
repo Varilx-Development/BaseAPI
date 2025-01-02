@@ -1,13 +1,12 @@
 package de.varilx.configuration;
 
+import de.varilx.BaseAPI;
 import de.varilx.configuration.file.YamlConfiguration;
-import lombok.Getter;
 
 import java.io.*;
 
-public class VaxConfiguration {
+public class VaxConfiguration extends YamlConfiguration {
 
-    @Getter
     private YamlConfiguration config;
     private final File configFile;
 
@@ -41,22 +40,26 @@ public class VaxConfiguration {
     }
 
     public void reload() {
-        this.config = YamlConfiguration.loadConfiguration(this.configFile);
+        if (this.configFile == null) {
+            BaseAPI.get().getLogger().warning("Tried to save file while file is not set");
+            return;
+        }
+        try {
+            this.config.load(this.configFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void saveConfig() {
+        if (this.configFile == null) {
+            BaseAPI.get().getLogger().warning("Tried to save file while file is not set");
+            return;
+        }
         try {
             config.save(configFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public String getString(String path) {
-        return this.config.getString(path);
-    }
-
-    public String getString(String path, String defaultValue) {
-        return this.config.getString(path, defaultValue);
     }
 }

@@ -1,6 +1,7 @@
 package de.varilx.inventory.builder;
 
 import de.varilx.BaseAPI;
+import de.varilx.BaseSpigotAPI;
 import de.varilx.inventory.GameInventory;
 import de.varilx.inventory.exception.GameInventoryBuildException;
 import de.varilx.inventory.item.ClickableItem;
@@ -8,7 +9,6 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.List;
@@ -85,7 +85,7 @@ public class GameInventoryBuilder {
         } else {
             shadowInventory = new GameInventory(holder, (inventorySize == 0 ? 9 : inventorySize), inventoryName, pattern, items);
         }
-        baseAPI.getGameInventoryController().registerInventory(shadowInventory);
+        ((BaseSpigotAPI) baseAPI).getGameInventoryController().registerInventory(shadowInventory);
         return shadowInventory;
     }
 
