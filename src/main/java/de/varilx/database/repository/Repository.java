@@ -28,4 +28,8 @@ public interface Repository<ENTITY, ID> {
 
     CompletableFuture<ENTITY> findByFieldNames(Map<String, Object> values);
 
+    CompletableFuture<List<ENTITY>> findManyByFieldName(String name, Object value);
+
+    CompletableFuture<List<ENTITY>> findManyByFieldNames(Map<String, Object> values);
+
 }
