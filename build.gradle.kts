@@ -51,7 +51,7 @@ dependencies {
     // JUnit and SLF4J for testing
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.4")
     testImplementation("org.slf4j:slf4j-jdk14:2.0.16")
-    testImplementation("org.assertj:assertj-core:3.27.1")
+    testImplementation("org.assertj:assertj-core:3.27.2")
 }
 
 tasks.withType<Test> {
