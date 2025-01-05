@@ -145,9 +145,7 @@ public class SQLRepository<E, ID> implements Repository<E, ID> {
                 session.beginTransaction();
                 String hql = "FROM " + entityClass.getName() + (entries.size() > 0 ? " WHERE " : "");
 
-                hql += entries.entrySet().stream().map(entry -> {
-                    return entry.getKey() + " = :" +entry.getKey();
-                }).collect(Collectors.joining(" AND "));
+                hql += entries.keySet().stream().map(object -> object + " = :" + object).collect(Collectors.joining(" AND "));
 
 
                 Query<E> query = session.createQuery(hql, entityClass);
@@ -158,6 +156,35 @@ public class SQLRepository<E, ID> implements Repository<E, ID> {
 
                 E result = query
                         .uniqueResult();
+                session.getTransaction().commit();
+                return result;
+            }
+        });
+    }
+
+    @Override
+    public CompletableFuture<List<E>> findManyByFieldName(String name, Object value) {
+        return this.findManyByFieldNames(Map.of(name, value));
+    }
+
+    @Override
+    public CompletableFuture<List<E>> findManyByFieldNames(Map<String, Object> entries) {
+        return CompletableFuture.supplyAsync(() -> {
+            try (Session session = this.sessionFactory.openSession()) {
+                session.beginTransaction();
+                String hql = "FROM " + entityClass.getName() + (entries.size() > 0 ? " WHERE " : "");
+
+                hql += entries.keySet().stream().map(object -> object + " = :" + object).collect(Collectors.joining(" AND "));
+
+
+                Query<E> query = session.createQuery(hql, entityClass);
+
+                for (int i = 0; i < entries.size(); i++) {
+                    query.setParameter(entries.keySet().stream().toList().get(i), entries.values().stream().toList().get(i));
+                }
+
+                List<E> result = query
+                        .getResultList();
                 session.getTransaction().commit();
                 return result;
             }

@@ -114,6 +114,22 @@ public class MongoRepository<E, ID> implements Repository<E, ID> {
         });
     }
 
+    @Override
+    public CompletableFuture<List<E>> findManyByFieldName(String name, Object value) {
+        return this.findManyByFieldNames(Map.of(name, value));
+    }
+
+    @Override
+    public CompletableFuture<List<E>> findManyByFieldNames(Map<String, Object> values) {
+        return CompletableFuture.supplyAsync(() -> {
+            Bson filter = Filters.empty();
+            for (Map.Entry<String, Object> entry : values.entrySet()) {
+                filter = Filters.and(filter, Filters.eq(entry.getKey(), entry.getValue()));
+            }
+            return database.find(filter).into(new ArrayList<>());
+        });
+    }
+
     private ID getId(E entity) {
         return ReflectionUtils.getId(entity, idClass);
     }
