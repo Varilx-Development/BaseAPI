@@ -28,8 +28,8 @@ dependencies {
     testImplementation("org.hibernate.orm:hibernate-community-dialects:6.6.4.Final")
 
     // SQLite
-    implementation("org.xerial:sqlite-jdbc:3.47.2.0")
-    testImplementation("org.xerial:sqlite-jdbc:3.47.2.0")
+    implementation("org.xerial:sqlite-jdbc:3.49.1.0")
+    testImplementation("org.xerial:sqlite-jdbc:3.49.1.0")
 
     // PaperMC API
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
