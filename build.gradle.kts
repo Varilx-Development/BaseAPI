@@ -45,7 +45,7 @@ dependencies {
     implementation("org.jetbrains:annotations:26.0.2")
 
     // JUnit and SLF4J for testing
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.4")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.12.2")
     testImplementation("org.slf4j:slf4j-jdk14:2.0.17")
     testImplementation("org.assertj:assertj-core:3.27.3")
 }
