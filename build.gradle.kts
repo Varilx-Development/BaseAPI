@@ -46,7 +46,7 @@ dependencies {
     testAnnotationProcessor("org.projectlombok:lombok:1.18.36")
 
     // JetBrains Annotations
-    implementation("org.jetbrains:annotations:26.0.1")
+    implementation("org.jetbrains:annotations:26.0.2")
 
     // JUnit and SLF4J for testing
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.11.4")
