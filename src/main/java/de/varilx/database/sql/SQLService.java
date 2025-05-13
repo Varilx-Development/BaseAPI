@@ -5,10 +5,22 @@ import de.varilx.database.repository.Repository;
 import de.varilx.database.Service;
 import de.varilx.database.sql.configuration.HibernateConfiguration;
 import de.varilx.database.sql.repository.SQLRepository;
+import jakarta.persistence.Entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.reflections.Reflections;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
+
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Vector;
 
 
 @Getter
@@ -25,8 +37,30 @@ public class SQLService extends Service {
                 configuration.getString("SQL.password")
         );
 
+        Configuration hibernateConfig = hibernateConfiguration.toHibernateConfig(loader, type);
 
-        sessionFactory = hibernateConfiguration.toHibernateConfig(loader, type).buildSessionFactory();
+        if (type == ServiceType.MYSQL) {
+            hibernateConfig.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+            hibernateConfig.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
+        } else if (type == ServiceType.SQLITE) {
+            hibernateConfig.setProperty("hibernate.dialect", "org.hibernate.dialect.SQLiteDialect");
+            hibernateConfig.setProperty("hibernate.connection.driver_class", "org.sqlite.JDBC");
+        }
+
+        hibernateConfig.setProperty("hibernate.hbm2ddl.auto", "update");
+
+        Reflections reflections = new Reflections(new ConfigurationBuilder()
+                .setUrls(ClasspathHelper.forPackage("de.varilx", loader))
+                .setScanners(new TypeAnnotationsScanner())
+        );
+
+        Set<Class<?>> entityClasses = reflections.getTypesAnnotatedWith(Entity.class);
+
+        for (Class<?> entityClass : entityClasses) {
+            hibernateConfig.addAnnotatedClass(entityClass);
+        }
+
+        sessionFactory = hibernateConfig.buildSessionFactory();
     }
 
     @Override
