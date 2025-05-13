@@ -86,8 +86,8 @@ publishing {
             name = "Reposilite"
             url = URI("https://reposilite.varilx.de/Varilx")
             credentials {
-                username = "Dario"
-                password = System.getenv("REPOSILITE_TOKEN")
+                username = System.getenv("VARILX_USER")
+                password = System.getenv("VARILX_TOKEN")
             }
         }
     }
