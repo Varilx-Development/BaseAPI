@@ -8,9 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class BaseSpigotAPI extends BaseAPI {
@@ -44,14 +42,22 @@ public class BaseSpigotAPI extends BaseAPI {
     }
 
     public void enable() {
+        plugin.saveResource("database.yml", false);
         this.databaseConfiguration = new VaxConfiguration(plugin.getDataFolder(), "database.yml");
-        if (!this.isDatabaseDisabled()) this.configuration = new VaxConfiguration(plugin.getDataFolder(), "config.yml");
+        if (!this.isDatabaseDisabled()) {
+            plugin.saveResource("config.yml", false);
+            this.configuration = new VaxConfiguration(plugin.getDataFolder(), "config.yml");
+        }
 
+        Set<String> triedLanguages = new HashSet<>();
         Locale.availableLocales().forEach(locale -> {
+            if  (triedLanguages.contains(locale.getLanguage())) return;
+            triedLanguages.add(locale.getLanguage());
             @Nullable InputStream resource = plugin.getResource("lang/" + locale.getLanguage() + ".yml");
             if (resource == null) return;
             if (locale.getLanguage().isEmpty()) return;
 
+            plugin.saveResource("lang/" + locale.getLanguage() + ".yml", false);
             VaxConfiguration config = new VaxConfiguration(plugin.getDataFolder(), "lang/" + locale.getLanguage() + ".yml");
             this.languageConfigurations.put(locale.getLanguage(), config);
         });
