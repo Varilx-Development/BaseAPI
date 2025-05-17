@@ -1,6 +1,5 @@
 package de.varilx.test.database.list;
 
-import de.varilx.database.id.MongoId;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -15,7 +14,6 @@ import lombok.experimental.FieldDefaults;
 public class SchoolClass {
 
     @Id
-    @MongoId
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
