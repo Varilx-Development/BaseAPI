@@ -17,10 +17,6 @@ repositories {
 }
 
 dependencies {
-    // MongoDB
-    implementation("org.mongodb:mongodb-driver-sync:5.5.0")
-    testImplementation("org.mongodb:mongodb-driver-sync:5.5.0")
-
     // Hibernate and Jakarta
     implementation("jakarta.persistence:jakarta.persistence-api:3.2.0")
     implementation("org.hibernate:hibernate-core:6.6.5.Final")

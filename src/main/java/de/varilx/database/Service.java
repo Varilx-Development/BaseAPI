@@ -1,7 +1,6 @@
 package de.varilx.database;
 
 import de.varilx.configuration.VaxConfiguration;
-import de.varilx.database.mongo.MongoService;
 import de.varilx.database.repository.Repository;
 import de.varilx.database.sql.SQLService;
 import lombok.AccessLevel;
@@ -52,7 +51,6 @@ public abstract class Service {
 
     public enum ServiceType {
 
-        MONGO(MongoService.class),
         MYSQL(SQLService.class),
         SQLITE(SQLService.class);
 
