@@ -36,6 +36,16 @@ public class LanguageUtils {
         return components;
     }
 
+    public List<String> getMessageStringList(String path) {
+        String language = Optional.ofNullable(BaseAPI.get().getConfiguration().getString("language")).orElse("en");
+        List<String> raw = BaseAPI.get().getCurrentLanguageConfiguration().getStringList(path);
+        if (raw.isEmpty()) {
+            BaseAPI.get().getLogger().warning(path + " was not found in lang/" + language + ".yml");
+            return List.of("Path: " + path + " not found!");
+        }
+        return raw;
+    }
+
     public String getMessageString(String path) {
         String language = Optional.ofNullable(BaseAPI.get().getConfiguration().getString("language")).orElse("en");
         @Nullable String raw = BaseAPI.get().getCurrentLanguageConfiguration().getString(path);
