@@ -1,7 +1,8 @@
 ![Discord](https://img.shields.io/discord/1322873747535040512)
 ![Build Status](https://img.shields.io/github/actions/workflow/status/Varilx-Developement/BaseAPI/test.yml?branch=main)
 ![Release](https://img.shields.io/github/v/release/Varilx-Developement/BaseAPI)
-![base-api](https://github.com/user-attachments/assets/0fa5f1e8-5094-47e1-a06b-080669d7437f)
+![baseapi](https://github.com/user-attachments/assets/48fa0e2a-5c21-42bd-8834-e985ddce84a1)
+
 
 ---
 
@@ -30,5 +31,5 @@ dependencies {
 
 # Support?
 <a href="https://discord.gg/ZPyb9g6Gs4">
-    <img src="https://github.com/user-attachments/assets/e2c942ae-d79a-4606-b4b0-240fd92c9a90" alt="Join our Discord for help" width="400">
+    <img src="https://cdn.varilx.de/raw/Zm9inS.png" alt="Join our Discord for help" width="400">
 </a>
