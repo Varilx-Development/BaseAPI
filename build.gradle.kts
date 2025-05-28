@@ -19,7 +19,7 @@ repositories {
 dependencies {
     // Hibernate and Jakarta
     implementation("jakarta.persistence:jakarta.persistence-api:3.2.0")
-    implementation("org.hibernate:hibernate-core:6.6.15.Final")
+    implementation("org.hibernate:hibernate-core:6.6.17.Final")
     implementation("org.hibernate.orm:hibernate-community-dialects:6.6.15.Final")
     testImplementation("org.hibernate.orm:hibernate-community-dialects:6.6.15.Final")
 
